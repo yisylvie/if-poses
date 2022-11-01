@@ -20,7 +20,6 @@ let smoothDist = 0;
 let prevMarkerOn = false;
 let markerOn = false;
 let farther = document.getElementById("farther");
-let color_picker = document.getElementById("color_picker");
 function markerPoint(x, y, color, stroke) {
     this.x = x;
     this.y = y;
@@ -34,6 +33,7 @@ let smoothRightShoulder = new markerPoint(0,0);
 
 document.getElementById("img");
 function setup() {
+    colorPickerImg = loadImage('location pin.svg');
     frameRate(30);
     createCanvas(windowWidth, windowHeight);
     background(0);
@@ -304,8 +304,7 @@ function draw() {
         console.log(prevMarkerOn);
 
         // right hand color picker
-        color_picker.style.right = colorPoint.x + "px";
-        color_picker.style.top = colorPoint.y + "px";
+        image(colorPickerImg, colorPoint.x, colorPoint.y, smoothDist/1.5, smoothDist/1.5);
         ellipse(colorPoint.x, colorPoint.y, smoothDist/1.5, smoothDist/1.5);
     }
 }
