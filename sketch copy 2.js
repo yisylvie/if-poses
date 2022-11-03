@@ -347,8 +347,6 @@ function draw() {
                 saveP.style.top = firstLeftPointer.y - 35 - pointerSmoothDist * 4 + "px";
 
                 clearP.style.top = firstLeftPointer.y - 35 - pointerSmoothDist * 4 + "px";
-                // rect(firstLeftPointer.x + pointerSmoothDist * 2, firstLeftPointer.y - pointerSmoothDist * 3, 100,100);
-                // rect(firstLeftPointer.x + pointerSmoothDist * 6, firstLeftPointer.y - pointerSmoothDist * 3, 100,100);
 
                 // if pointer is over clear, then clear screen
                 if(leftPointer.y <= firstLeftPointer.y - pointerSmoothDist * 4 && leftPointer.x >= firstLeftPointer.x + pointerSmoothDist * 6) {
@@ -374,8 +372,6 @@ function draw() {
                 saveP.style.top = firstLeftPointer.y - 35 + pointerSmoothDist * 4 + "px";
 
                 clearP.style.top = firstLeftPointer.y - 35 + pointerSmoothDist * 4 + "px";
-                // rect(firstLeftPointer.x + pointerSmoothDist * 2, firstLeftPointer.y - pointerSmoothDist * 4, 100,100);
-                // rect(firstLeftPointer.x + pointerSmoothDist * 6, firstLeftPointer.y - pointerSmoothDist * 4, 100,100);
 
                 // if pointer is over clear, then clear screen
                 if(leftPointer.y >= firstLeftPointer.y + pointerSmoothDist * 4 && leftPointer.x >= firstLeftPointer.x + pointerSmoothDist * 6) {
