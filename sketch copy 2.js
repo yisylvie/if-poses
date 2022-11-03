@@ -233,7 +233,8 @@ function draw() {
         smoothDist = dist(smoothEyeR.x, smoothEyeR.y, smoothEyeL.x, smoothEyeL.y);
         
         strokeWeight(smoothDist/15);     
-
+        stroke(color(117, 38, 95, 1));
+        noFill();
         // // Display Pose Points
         // for (let i = 0; i < pose.keypoints.length; i++) {
         //     let x = pose.keypoints[i].position.x;
@@ -253,8 +254,6 @@ function draw() {
         // }
 
         prevMarkerOn = markerOn;
-        stroke(117, 38, 95, 1);
-        noFill(); 
 
         palette();
 
