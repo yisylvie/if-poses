@@ -313,6 +313,7 @@ function draw() {
                 marker.push(currMarkerPoint);
             }
 
+            // incriment size of array variable
             sizeOfAllMarkers ++;
             // left hand drawer shape
             image(brushImg, marker[marker.length - 1].x + ((height/10)/5) * 2.5, marker[marker.length - 1].y - ((height/10)/5) * 2.5, (height/10), (height/10));
