@@ -318,7 +318,7 @@ function draw() {
             // hide save and clear options
             saveP.style.display = "none";
             clearP.style.display = "none";
-        } else if(marker.length > 2) { //if there is actually artwork to save or clear
+        } else if(marker.length > 20) { //if there is actually artwork to save or clear
             // eyeball pointer
             image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
             
@@ -344,7 +344,7 @@ function draw() {
                 clearP.style.display = "none";
             }
             // if pointer is over save and screen has not already been cleared, save screen
-            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && marker.length > 2) {
+            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && marker.length > 20) {
                 // Prevent from running more that once 
                 if(!saved) {
                     console.log("save");
