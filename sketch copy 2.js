@@ -17,7 +17,7 @@ let videoBottom = 0;
 let videoLeft = 0;
 let videoRight = 0;
 let smoothDist = 0;
-let whore = 1;
+let sizeOfAllMarkers = 0;
 let prevMarkerOn = false;
 let markerOn = false;
 let markerForRealOn = false;
@@ -310,7 +310,7 @@ function draw() {
                 marker.push(currMarkerPoint);
             }
 
-            whore += 1;
+            sizeOfAllMarkers ++;
             // left hand drawer shape
             image(brushImg, marker[marker.length - 1].x + (smoothDist/5) * 3, marker[marker.length - 1].y - (smoothDist/5) * 3, smoothDist, smoothDist);
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/5, smoothDist/5);     
@@ -319,45 +319,78 @@ function draw() {
             image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
         }
 
-        console.log(whore);
+        console.log(sizeOfAllMarkers);
 
         // create functionality for saving and clearing artwork
         if(markerForRealOn) {
             // hide save and clear options
             saveP.style.display = "none";
             clearP.style.display = "none";
-        } else if(whore > 20) {
+        } else if(sizeOfAllMarkers > 20) {
             // show save and clear options
             saveP.style.display = "unset";
             clearP.style.display = "unset";
 
-            // save is above hand
-            saveP.style.top = firstLeftPointer.y - smoothDist * 4 + "px";
-            saveP.style.right = leftPointer.x + "px";
-            // clear is below hand
-            clearP.style.top = firstLeftPointer.y + smoothDist * 4 + "px";
-            clearP.style.right = leftPointer.x + "px";
+            // save is on the left of the hand
+            saveP.style.right = leftEye.x + smoothDist * 2 + "px";
+            
+            // clear is on the right of the hand
+            clearP.style.right = leftEye.x + smoothDist * 4 + "px";
 
-            // if pointer is over clear, then clear screen
-            if(leftPointer.y >= firstLeftPointer.y + smoothDist * 4) {
-                // remove all points from marker arrays
-                marker = [];
-                allMarkers = [];
-                whore = 1;
-                console.log("clear");
-                // hide save and clear options
-                saveP.style.display = "none";
-                clearP.style.display = "none";
-            }
-            // if pointer is over save and screen has not already been cleared, save screen
-            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && whore > 20) {
-                // Prevent from running more that once 
-                if(!saved) {
-                    console.log("save");
-                    saveCanvas(canvas, 'myCanvas');
-                    saved = true;
+            // if hand is on lower half of the screen
+            if(firstLeftPointer.y > centerY) {
+                saveP.style.top = firstLeftPointer.y - smoothDist * 3 + "px";
+
+                clearP.style.top = firstLeftPointer.y - smoothDist * 3 + "px";
+
+                // if pointer is over clear, then clear screen
+                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x >= leftEye.x + smoothDist * 4) {
+                    // remove all points from marker arrays
+                    marker = [];
+                    allMarkers = [];
+                    sizeOfAllMarkers = 0;
+                    console.log("clear");
+                    // hide save and clear options
+                    saveP.style.display = "none";
+                    clearP.style.display = "none";
+                }
+                // if pointer is over save and screen has not already been cleared, save screen
+                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x <= leftEye.x + smoothDist * 2) {
+                    // Prevent from running more that once 
+                    if(!saved) {
+                        console.log("save");
+                        saveCanvas(canvas, 'myCanvas');
+                        saved = true;
+                    }
+                }
+            } else { //if hand is on upper half of the screen
+                saveP.style.top = firstLeftPointer.y + smoothDist * 3 + "px";
+
+                clearP.style.top = firstLeftPointer.y + smoothDist * 3 + "px";
+
+                // if pointer is over clear, then clear screen
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x >= leftEye.x + smoothDist * 4) {
+                    // remove all points from marker arrays
+                    marker = [];
+                    allMarkers = [];
+                    sizeOfAllMarkers = 0;
+                    console.log("clear");
+                    // hide save and clear options
+                    saveP.style.display = "none";
+                    clearP.style.display = "none";
+                }
+                // if pointer is over save and screen has not already been cleared, save screen
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x <= leftEye.x + smoothDist * 2) {
+                    // Prevent from running more that once 
+                    if(!saved) {
+                        console.log("save");
+                        saveCanvas(canvas, 'myCanvas');
+                        saved = true;
+                    }
                 }
             }
+
+            
         }
 
         palette();
