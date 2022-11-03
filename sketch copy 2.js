@@ -17,7 +17,7 @@ let videoBottom = 0;
 let videoLeft = 0;
 let videoRight = 0;
 let smoothDist = 0;
-let allMarkersLength = 1;
+let whore = 1;
 let prevMarkerOn = false;
 let markerOn = false;
 let markerForRealOn = false;
@@ -310,7 +310,7 @@ function draw() {
                 marker.push(currMarkerPoint);
             }
 
-            allMarkersLength += 1;
+            whore += 1;
             // left hand drawer shape
             image(brushImg, marker[marker.length - 1].x + (smoothDist/5) * 3, marker[marker.length - 1].y - (smoothDist/5) * 3, smoothDist, smoothDist);
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/5, smoothDist/5);     
@@ -319,14 +319,14 @@ function draw() {
             image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
         }
 
-        console.log(allMarkersLength);
+        console.log(whore);
 
         // create functionality for saving and clearing artwork
         if(markerForRealOn) {
             // hide save and clear options
             saveP.style.display = "none";
             clearP.style.display = "none";
-        } else if(allMarkerslength > 20) {
+        } else if(whore > 20) {
             // show save and clear options
             saveP.style.display = "unset";
             clearP.style.display = "unset";
@@ -343,14 +343,14 @@ function draw() {
                 // remove all points from marker arrays
                 marker = [];
                 allMarkers = [];
-                allMarkersLength = 1;
+                whore = 1;
                 console.log("clear");
                 // hide save and clear options
                 saveP.style.display = "none";
                 clearP.style.display = "none";
             }
             // if pointer is over save and screen has not already been cleared, save screen
-            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && allMarkerslength > 20) {
+            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && whore > 20) {
                 // Prevent from running more that once 
                 if(!saved) {
                     console.log("save");
