@@ -319,6 +319,8 @@ function draw() {
             image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
         }
 
+        console.log(allMarkersLength);
+
         // create functionality for saving and clearing artwork
         if(markerForRealOn) {
             // hide save and clear options
@@ -348,7 +350,7 @@ function draw() {
                 clearP.style.display = "none";
             }
             // if pointer is over save and screen has not already been cleared, save screen
-            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && allMarkers[0].length > 20) {
+            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && allMarkerslength > 20) {
                 // Prevent from running more that once 
                 if(!saved) {
                     console.log("save");
