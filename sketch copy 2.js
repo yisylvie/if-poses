@@ -20,8 +20,8 @@ let smoothDist = 0;
 let prevMarkerOn = false;
 let markerOn = false;
 let farther = document.getElementById("farther");
-let saveP = document.getElementById("save");
-let clearP = document.getElementById("clear");
+let saveP = document.getElementById("saveP");
+let clearP = document.getElementById("clearP");
 
 function markerPoint(x, y, color, stroke) {
     this.x = x;
@@ -282,7 +282,7 @@ function draw() {
         noFill(); 
         // add wrist position to marker array
         if(markerOn) {
-            // hide saveP and clear options
+            // hide save and clear options
             saveP.style.display = "none";
             clearP.style.display = "none";
             if(marker.length > 1) {
