@@ -17,6 +17,7 @@ let videoBottom = 0;
 let videoLeft = 0;
 let videoRight = 0;
 let smoothDist = 0;
+let allMarkersLength = 0;
 let prevMarkerOn = false;
 let markerOn = false;
 let markerForRealOn = false;
@@ -308,9 +309,14 @@ function draw() {
                 let currMarkerPoint = new markerPoint(wristL.x,wristL.y, markerColor, smoothDist/3);  
                 marker.push(currMarkerPoint);
             }
+
+            allMarkersLength ++;
             // left hand drawer shape
             image(brushImg, marker[marker.length - 1].x + (smoothDist/5) * 3, marker[marker.length - 1].y - (smoothDist/5) * 3, smoothDist, smoothDist);
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/5, smoothDist/5);     
+        } else {
+            // left wrist pointer
+            image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
         }
 
         // create functionality for saving and clearing artwork
@@ -318,40 +324,36 @@ function draw() {
             // hide save and clear options
             saveP.style.display = "none";
             clearP.style.display = "none";
-        } else if(allMarkers.length >= 1) { //if there is actually artwork to save or clear
-            if(allMarkers[0].length > 20) {
-                // eyeball pointer
-                image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
-                
-                // show save and clear options
-                saveP.style.display = "unset";
-                clearP.style.display = "unset";
+        } else if(allMarkerslength > 20) {
+            // show save and clear options
+            saveP.style.display = "unset";
+            clearP.style.display = "unset";
 
-                // save is above hand
-                saveP.style.top = firstLeftPointer.y - smoothDist * 4 + "px";
-                saveP.style.right = leftPointer.x + "px";
-                // clear is below hand
-                clearP.style.top = firstLeftPointer.y + smoothDist * 4 + "px";
-                clearP.style.right = leftPointer.x + "px";
+            // save is above hand
+            saveP.style.top = firstLeftPointer.y - smoothDist * 4 + "px";
+            saveP.style.right = leftPointer.x + "px";
+            // clear is below hand
+            clearP.style.top = firstLeftPointer.y + smoothDist * 4 + "px";
+            clearP.style.right = leftPointer.x + "px";
 
-                // if pointer is over clear, then clear screen
-                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 4) {
-                    // remove all points from marker arrays
-                    marker = [];
-                    allMarkers = [];
-                    console.log("clear");
-                    // hide save and clear options
-                    saveP.style.display = "none";
-                    clearP.style.display = "none";
-                }
-                // if pointer is over save and screen has not already been cleared, save screen
-                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && allMarkers[0].length > 20) {
-                    // Prevent from running more that once 
-                    if(!saved) {
-                        console.log("save");
-                        saveCanvas(canvas, 'myCanvas');
-                        saved = true;
-                    }
+            // if pointer is over clear, then clear screen
+            if(leftPointer.y >= firstLeftPointer.y + smoothDist * 4) {
+                // remove all points from marker arrays
+                marker = [];
+                allMarkers = [];
+                allMarkersLength = 0;
+                console.log("clear");
+                // hide save and clear options
+                saveP.style.display = "none";
+                clearP.style.display = "none";
+            }
+            // if pointer is over save and screen has not already been cleared, save screen
+            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && allMarkers[0].length > 20) {
+                // Prevent from running more that once 
+                if(!saved) {
+                    console.log("save");
+                    saveCanvas(canvas, 'myCanvas');
+                    saved = true;
                 }
             }
         }
