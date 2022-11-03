@@ -249,6 +249,7 @@ function draw() {
         //     let b = skeleton[i][1];
         //     line(a.position.x, a.position.y,b.position.x,b.position.y);      
         // }
+
         prevMarkerOn = markerOn;
         palette();
 
@@ -282,7 +283,7 @@ function draw() {
         // right wrist smoothing
         colorPoint = shmooth(colorPoint, wristR);
 
-        // left wrist smoothing
+        // left wrist pointer smoothing (for when user is not drawing)
         leftPointer = shmooth(leftPointer, wristL);
 
         // get color of right wrist
@@ -312,35 +313,41 @@ function draw() {
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/5, smoothDist/5);     
         }
 
+        // create functionality for saving and clearing artwork
         if(markerForRealOn) {
             // hide save and clear options
             saveP.style.display = "none";
             clearP.style.display = "none";
-        } else if(marker.length > 2) {
+        } else if(marker.length > 2) { //if there is actually artwork to save or clear
             // eyeball pointer
             image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
+            
             // show save and clear options
             saveP.style.display = "unset";
             clearP.style.display = "unset";
-            // ellipse(firstLeftPointer.x, firstLeftPointer.y - smoothDist * 4, 100,100);
-            // ellipse(firstLeftPointer.x, firstLeftPointer.y + smoothDist * 4, 100,100);
-            console.log(firstLeftPointer);
+
+            // save is above hand
             saveP.style.top = firstLeftPointer.y - smoothDist * 4 + "px";
             saveP.style.right = leftPointer.x + "px";
+            // clear is below hand
             clearP.style.top = firstLeftPointer.y + smoothDist * 4 + "px";
             clearP.style.right = leftPointer.x + "px";
+
             // if pointer is over clear, then clear screen
             if(leftPointer.y >= firstLeftPointer.y + smoothDist * 4) {
                 // remove all points from marker arrays
                 marker = [];
                 allMarkers = [];
                 console.log("clear");
+                // hide save and clear options
+                saveP.style.display = "none";
+                clearP.style.display = "none";
             }
-            // if pointer is over save, save screen
-            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4) {
-                console.log("save");
+            // if pointer is over save and screen has not already been cleared, save screen
+            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && marker.length > 2) {
                 // Prevent from running more that once 
                 if(!saved) {
+                    console.log("save");
                     saveCanvas(canvas, 'myCanvas');
                     saved = true;
                 }
@@ -355,7 +362,7 @@ function draw() {
             allMarkers.push(marker);
         }
 
-        // if first point when merker is off
+        // if first point when marker is off designate where save and clear should be fixed
         if(prevMarkerOn && !markerOn) {
             firstLeftPointer = new markerPoint(leftPointer.x, leftPointer.y);
             console.log(markerOn);
@@ -364,6 +371,6 @@ function draw() {
 
         // right hand color picker
         image(colorPickerImg, colorPoint.x, colorPoint.y - (smoothDist/5) * 3 - smoothDist/10, smoothDist, smoothDist);
-        ellipse(colorPoint.x, colorPoint.y, smoothDist/5, smoothDist/5);
+        ellipse(colorPoint.x, colorPoint.y, undefined, smoothDist/5);
     }
 }
