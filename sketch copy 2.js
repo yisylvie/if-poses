@@ -281,6 +281,9 @@ function draw() {
         noFill(); 
         // add wrist position to marker array
         if(markerOn) {
+            // hide save and clear options
+            save.style.display = "none";
+            clear.style.display = "none";
             if(marker.length > 1) {
                 // smoothing
                 let x = shmooth(marker[marker.length - 1], wristL, wristL.confidence).x;
@@ -294,14 +297,27 @@ function draw() {
             // left hand drawer shape
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);     
         } else{
-            // left hand drawer shape
+            // left hand pointer
             image(pointerImg, marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);
+            // show save and clear options
             save.style.display = "unset";
             clear.style.display = "unset";
             save.style.top = smoothEyeL.y + "px";
             save.style.right = smoothEyeL.x + smoothDist * 2 + "px";
             clear.style.top = smoothEyeL.y + smoothDist * 2 + "px";
             clear.style.right = smoothEyeL.x + smoothDist * 2 + "px";
+            if(marker[marker.length - 1].x > smoothEyeL.x + smoothDist * 2) {
+                // if pointer is over clear, then clear screen
+                if( marker[marker.length - 1].y >= smoothEyeL.y + smoothDist * 2) {
+                    // remove all points from marker arrays
+                    marker = [];
+                    allMarkers = [];
+                }
+                // if pointer is over save, save screen
+                if( marker[marker.length - 1].y <= smoothEyeL.y) {
+                    saveCanvas(canvas, 'myCanvas');
+                }
+            }
         }
 
         palette();
