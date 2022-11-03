@@ -343,7 +343,7 @@ function draw() {
                 // remove all points from marker arrays
                 marker = [];
                 allMarkers = [];
-                allMarkersLength = 0;
+                allMarkersLength = 1;
                 console.log("clear");
                 // hide save and clear options
                 saveP.style.display = "none";
