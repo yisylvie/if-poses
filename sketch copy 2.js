@@ -318,8 +318,9 @@ function draw() {
             image(brushImg, marker[marker.length - 1].x + ((height/10)/5) * 3, marker[marker.length - 1].y - ((height/10)/5) * 3, (height/10), (height/10));
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, (height/10)/5, (height/10)/5);     
         } else {
-            // left wrist pointer
-            image(pointerImg, leftPointer.x, leftPointer.y, (height/10), (height/10));
+            // left hand drawer shape
+            image(brushImg, marker[marker.length - 1].x + ((height/10)/5) * 3, marker[marker.length - 1].y - ((height/10)/5) * 3, (height/10), (height/10));
+            ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, (height/10)/5, (height/10)/5);    
         }
 
         // create functionality for saving and clearing artwork
@@ -328,6 +329,9 @@ function draw() {
             saveP.style.display = "none";
             clearP.style.display = "none";
         } else if(sizeOfAllMarkers > 20) {
+            // left wrist pointer
+            image(pointerImg, leftPointer.x, leftPointer.y, (height/10), (height/10));
+
             // show save and clear options
             saveP.style.display = "unset";
             clearP.style.display = "unset";
