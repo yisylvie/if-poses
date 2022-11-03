@@ -370,7 +370,7 @@ function draw() {
         }
 
         // right hand color picker
-        image(colorPickerImg, colorPoint.x, colorPoint.y - (smoothDist/5) * 3 - smoothDist/10, undefined, smoothDist);
+        image(colorPickerImg, colorPoint.x, colorPoint.y - (smoothDist/5) * 3 - smoothDist/10, colorPickerImg.height * (smoothDist/colorPickerImg.width), smoothDist);
         ellipse(colorPoint.x, colorPoint.y, smoothDist/5, smoothDist/5);
     }
 }
