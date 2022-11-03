@@ -19,6 +19,8 @@ let videoRight = 0;
 let smoothDist = 0;
 let prevMarkerOn = false;
 let markerOn = false;
+let markerForRealOn = false;
+let saved = false;
 let farther = document.getElementById("farther");
 let saveP = document.getElementById("saveP");
 let clearP = document.getElementById("clearP");
@@ -33,6 +35,7 @@ let leftPointer = new markerPoint(0,0);
 let colorPoint = new markerPoint(0,0);
 let smoothEyeR = new markerPoint(0,0);
 let smoothEyeL = new markerPoint(0,0);
+let firstLeftPointer = new markerPoint(0,0);
 let smoothRightShoulder = new markerPoint(0,0);
 
 document.getElementById("img");
@@ -40,6 +43,9 @@ function setup() {
     colorPickerImg = loadImage('location pin.svg');
     brushImg = loadImage('brush.svg');
     pointerImg = loadImage('arrow mouse pointer.png');
+    // colorPickerImg = loadImage('data:image/png;base64,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');
+    // brushImg = loadImage('data:image/png;base64,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');
+    // pointerImg = loadImage('data:image/png;base64,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');
     frameRate(30);
     createCanvas(windowWidth, windowHeight);
     background(0);
@@ -119,9 +125,11 @@ function palette(){
             rectMode(CORNER);
             if ((smoothEyeR.x - colorPoint.x) < smoothDist * 2 ){ //if hand is close to body
                 markerOn = false;
-                rect(smoothEyeR.x - smoothDist * 2 - ((height-100)/7)/2, i * ((height-100)/7) + 70, ((height-100)/7), ((height-100)/7));
+                markerForRealOn = false;
+                rect(70, i * ((height-100)/7) + 70, ((height-100)/7), ((height-100)/7));
             } else{
                 markerOn = true;
+                markerForRealOn = true;
                 rect(colorPoint.x - ((height-100)/7)/2, i * ((height-100)/7) + 70, ((height-100)/7), ((height-100)/7));
                 // if not over a color
                 if(colorPoint.y <= 70 + 5 || colorPoint.y > height-100 + 70 - 5) {
@@ -134,9 +142,11 @@ function palette(){
             // distance between hand and shoulder and distance from y coordinate of right eye
             if (dist(smoothRightShoulder.x, smoothRightShoulder.y, colorPoint.x, colorPoint.y) < smoothDist * 3 || (smoothEyeR.x - colorPoint.x) < smoothDist * 4 ){ //if hand is close to body
                 markerOn = false;
-                rect(smoothEyeR.x - smoothDist * 4, smoothEyeR.y - smoothDist * 2.5 + i * (smoothDist * 2), (smoothDist * 2), (smoothDist * 2));
+                markerForRealOn = false;
+                rect(70, smoothEyeR.y - smoothDist * 2.5 + i * (smoothDist * 2), (smoothDist * 2), (smoothDist * 2));
             } else{ //if player is positioned well
                 markerOn = true;
+                markerForRealOn = true;
                 rect(colorPoint.x, smoothEyeR.y - smoothDist * 2.5 + i * (smoothDist * 2), (smoothDist * 2), (smoothDist * 2));
                 // if not over a color
                 if(colorPoint.y <= smoothEyeR.y - smoothDist * 2.5 - .5 * (smoothDist * 2) + 5 || colorPoint.y >= smoothEyeR.y - smoothDist * 2.5 + 6.5 * (smoothDist * 2) - 5) {
@@ -220,7 +230,7 @@ function draw() {
         smoothEyeR = shmooth(smoothEyeR, eyeR);
         smoothRightShoulder = shmooth(smoothRightShoulder, shoulderR);
         smoothDist = dist(smoothEyeR.x, smoothEyeR.y, smoothEyeL.x, smoothEyeL.y);
-        strokeWeight(smoothDist/5);     
+        strokeWeight(smoothDist/15);     
 
         // // Display Pose Points
         // for (let i = 0; i < pose.keypoints.length; i++) {
@@ -287,9 +297,6 @@ function draw() {
         noFill(); 
         // add wrist position to marker array
         if(markerOn) {
-            // hide save and clear options
-            saveP.style.display = "none";
-            clearP.style.display = "none";
             if(marker.length > 1) {
                 // smoothing
                 let x = shmooth(marker[marker.length - 1], wristL).x;
@@ -301,28 +308,41 @@ function draw() {
                 marker.push(currMarkerPoint);
             }
             // left hand drawer shape
-            image(brushImg, marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);
-            ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);     
-        } else{
-            // left hand pointer
-            image(pointerImg, leftPointer.x, leftPointer.y, smoothDist/1.5, smoothDist/1.5);
+            image(brushImg, marker[marker.length - 1].x + (smoothDist/5) * 3, marker[marker.length - 1].y - (smoothDist/5) * 3, smoothDist, smoothDist);
+            ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/5, smoothDist/5);     
+        }
+
+        if(markerForRealOn) {
+            // hide save and clear options
+            saveP.style.display = "none";
+            clearP.style.display = "none";
+        } else if(marker.length > 2) {
+            // eyeball pointer
+            image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
             // show save and clear options
             saveP.style.display = "unset";
             clearP.style.display = "unset";
-            saveP.style.top = smoothEyeL.y + "px";
-            saveP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
-            clearP.style.top = smoothEyeL.y + smoothDist * 2 + "px";
-            clearP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
-            if(leftPointer.x > smoothEyeL.x + smoothDist * 2) {
-                // if pointer is over clear, then clear screen
-                if( leftPointer.y >= smoothEyeL.y + smoothDist * 2) {
-                    // remove all points from marker arrays
-                    marker = [];
-                    allMarkers = [];
-                }
-                // if pointer is over save, save screen
-                if( leftPointer.y <= smoothEyeL.y) {
+            // ellipse(firstLeftPointer.x, firstLeftPointer.y - smoothDist * 4, 100,100);
+            // ellipse(firstLeftPointer.x, firstLeftPointer.y + smoothDist * 4, 100,100);
+            console.log(firstLeftPointer);
+            saveP.style.top = firstLeftPointer.y - smoothDist * 4 + "px";
+            saveP.style.right = leftPointer.x + "px";
+            clearP.style.top = firstLeftPointer.y + smoothDist * 4 + "px";
+            clearP.style.right = leftPointer.x + "px";
+            // if pointer is over clear, then clear screen
+            if(leftPointer.y >= firstLeftPointer.y + smoothDist * 4) {
+                // remove all points from marker arrays
+                marker = [];
+                allMarkers = [];
+                console.log("clear");
+            }
+            // if pointer is over save, save screen
+            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4) {
+                console.log("save");
+                // Prevent from running more that once 
+                if(!saved) {
                     saveCanvas(canvas, 'myCanvas');
+                    saved = true;
                 }
             }
         }
@@ -335,8 +355,15 @@ function draw() {
             allMarkers.push(marker);
         }
 
+        // if first point when merker is off
+        if(prevMarkerOn && !markerOn) {
+            firstLeftPointer = new markerPoint(leftPointer.x, leftPointer.y);
+            console.log(markerOn);
+            saved = false;
+        }
+
         // right hand color picker
-        image(colorPickerImg, colorPoint.x, colorPoint.y, smoothDist/1.5, smoothDist/1.5);
-        ellipse(colorPoint.x, colorPoint.y, smoothDist/1.5, smoothDist/1.5);
+        image(colorPickerImg, colorPoint.x, colorPoint.y - (smoothDist/5) * 3 - smoothDist/10, smoothDist, smoothDist);
+        ellipse(colorPoint.x, colorPoint.y, smoothDist/5, smoothDist/5);
     }
 }
