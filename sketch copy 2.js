@@ -37,6 +37,7 @@ let smoothRightShoulder = new markerPoint(0,0);
 document.getElementById("img");
 function setup() {
     colorPickerImg = loadImage('location pin.svg');
+    brushImg = loadImage('brush.svg');
     pointerImg = loadImage('arrow mouse pointer.png');
     frameRate(30);
     createCanvas(windowWidth, windowHeight);
@@ -295,6 +296,7 @@ function draw() {
                 marker.push(currMarkerPoint);
             }
             // left hand drawer shape
+            image(brushImg, marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);     
         } else{
             // left hand pointer
