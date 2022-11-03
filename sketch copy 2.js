@@ -29,6 +29,7 @@ function markerPoint(x, y, color, stroke) {
     this.color = color;
     this.stroke = stroke;
 }
+let leftPointer = new markerPoint(0,0);
 let colorPoint = new markerPoint(0,0);
 let smoothEyeR = new markerPoint(0,0);
 let smoothEyeL = new markerPoint(0,0);
@@ -80,7 +81,8 @@ function flipY(yCoordinate){
 }
 
 // smooth a point
-function shmooth(smoothed, newPoint, confidence){
+function shmooth(smoothed, newPoint){
+    let confidence = newPoint.confidence;
     // if first point
     if(smoothed.x == 0 || smoothed.y == 0) {
         smoothed = newPoint;
@@ -214,9 +216,9 @@ function draw() {
         let ankleR=pose.rightAnkle;
         let ankleL=pose.leftAnkle;
 
-        smoothEyeL = shmooth(smoothEyeL, eyeL, eyeL.confidence);
-        smoothEyeR = shmooth(smoothEyeR, eyeR, eyeR.confidence);
-        smoothRightShoulder = shmooth(smoothRightShoulder, shoulderR, shoulderR.confidence);
+        smoothEyeL = shmooth(smoothEyeL, eyeL);
+        smoothEyeR = shmooth(smoothEyeR, eyeR);
+        smoothRightShoulder = shmooth(smoothRightShoulder, shoulderR);
         smoothDist = dist(smoothEyeR.x, smoothEyeR.y, smoothEyeL.x, smoothEyeL.y);
         strokeWeight(smoothDist/5);     
 
@@ -268,7 +270,10 @@ function draw() {
         pop();
 
         // right wrist smoothing
-        colorPoint = shmooth(colorPoint, wristR, wristR.confidence);
+        colorPoint = shmooth(colorPoint, wristR);
+
+        // left wrist smoothing
+        leftPointer = shmooth(leftPointer, wristL);
 
         // get color of right wrist
         context = canvas.getContext('2d', true, false, 'srgb', true);
@@ -287,8 +292,8 @@ function draw() {
             clearP.style.display = "none";
             if(marker.length > 1) {
                 // smoothing
-                let x = shmooth(marker[marker.length - 1], wristL, wristL.confidence).x;
-                let y = shmooth(marker[marker.length - 1], wristL, wristL.confidence).y;
+                let x = shmooth(marker[marker.length - 1], wristL).x;
+                let y = shmooth(marker[marker.length - 1], wristL).y;
                 let currMarkerPoint = new markerPoint(x,y, markerColor, smoothDist/3);
                 marker.push(currMarkerPoint);
             } else{ //if first point in array
@@ -300,7 +305,7 @@ function draw() {
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);     
         } else{
             // left hand pointer
-            image(pointerImg, marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);
+            image(pointerImg, leftPointer.x, leftPointer.y, smoothDist/1.5, smoothDist/1.5);
             // show save and clear options
             saveP.style.display = "unset";
             clearP.style.display = "unset";
@@ -308,15 +313,15 @@ function draw() {
             saveP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
             clearP.style.top = smoothEyeL.y + smoothDist * 2 + "px";
             clearP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
-            if(marker[marker.length - 1].x > smoothEyeL.x + smoothDist * 2) {
+            if(leftPointer.x > smoothEyeL.x + smoothDist * 2) {
                 // if pointer is over clear, then clear screen
-                if( marker[marker.length - 1].y >= smoothEyeL.y + smoothDist * 2) {
+                if( leftPointer.y >= smoothEyeL.y + smoothDist * 2) {
                     // remove all points from marker arrays
                     marker = [];
                     allMarkers = [];
                 }
                 // if pointer is over save, save screen
-                if( marker[marker.length - 1].y <= smoothEyeL.y) {
+                if( leftPointer.y <= smoothEyeL.y) {
                     saveCanvas(canvas, 'myCanvas');
                 }
             }
