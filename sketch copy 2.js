@@ -310,7 +310,7 @@ function draw() {
                 marker.push(currMarkerPoint);
             }
 
-            allMarkersLength ++;
+            allMarkersLength += 1;
             // left hand drawer shape
             image(brushImg, marker[marker.length - 1].x + (smoothDist/5) * 3, marker[marker.length - 1].y - (smoothDist/5) * 3, smoothDist, smoothDist);
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/5, smoothDist/5);     
