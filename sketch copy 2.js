@@ -296,7 +296,7 @@ function draw() {
         let a = context.getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[3];
         markerColor = color(r,g,b,a);
 
-        strokeWeight(smoothDist/15);     
+        strokeWeight((height/10)/15);     
         stroke(color(117, 38, 95));
         noFill();
 
@@ -315,11 +315,11 @@ function draw() {
 
             sizeOfAllMarkers ++;
             // left hand drawer shape
-            image(brushImg, marker[marker.length - 1].x + (smoothDist/5) * 3, marker[marker.length - 1].y - (smoothDist/5) * 3, smoothDist, smoothDist);
-            ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/5, smoothDist/5);     
+            image(brushImg, marker[marker.length - 1].x + ((height/10)/5) * 3, marker[marker.length - 1].y - ((height/10)/5) * 3, (height/10), (height/10));
+            ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, (height/10)/5, (height/10)/5);     
         } else {
             // left wrist pointer
-            image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
+            image(pointerImg, leftPointer.x, leftPointer.y, (height/10), (height/10));
         }
 
         // create functionality for saving and clearing artwork
@@ -413,7 +413,7 @@ function draw() {
         }
 
         // right hand color picker
-        image(colorPickerImg, colorPoint.x, colorPoint.y - (smoothDist/5) * 3 - smoothDist/10, smoothDist, smoothDist);
-        ellipse(colorPoint.x, colorPoint.y, smoothDist/5, smoothDist/5);
+        image(colorPickerImg, colorPoint.x, colorPoint.y - ((height/10)/5) * 3 - (height/10)/10, (height/10), (height/10));
+        ellipse(colorPoint.x, colorPoint.y, (height/10)/5, (height/10)/5);
     }
 }
