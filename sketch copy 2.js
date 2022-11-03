@@ -20,6 +20,9 @@ let smoothDist = 0;
 let prevMarkerOn = false;
 let markerOn = false;
 let farther = document.getElementById("farther");
+let save = document.getElementById("save");
+let clear = document.getElementById("clear");
+
 function markerPoint(x, y, color, stroke) {
     this.x = x;
     this.y = y;
@@ -34,6 +37,7 @@ let smoothRightShoulder = new markerPoint(0,0);
 document.getElementById("img");
 function setup() {
     colorPickerImg = loadImage('location pin.svg');
+    pointerImg = loadImage('arrow mouse pointer.png');
     frameRate(30);
     createCanvas(windowWidth, windowHeight);
     background(0);
@@ -41,6 +45,8 @@ function setup() {
     canvas.willReadFrequently = true;
     video = createCapture(VIDEO);
     video.hide();
+    imageMode(CENTER);
+    rectMode(CENTER);
     poseNet = ml5.poseNet(video, modelLoaded);
     poseNet.on('pose', gotPoses);
     centerX = width/2;
@@ -107,11 +113,12 @@ function palette(){
         // // height of entire box is greater than height of canvas
         if(7 * (smoothDist * 2) > height - 100) {
             farther.style.display = "unset";
+            rectMode(CORNER);
             if ((smoothEyeR.x - colorPoint.x) < smoothDist * 2 ){ //if hand is close to body
                 markerOn = false;
+                rect(smoothEyeR.x - smoothDist * 2 - ((height-100)/7)/2, i * ((height-100)/7) + 70, ((height-100)/7), ((height-100)/7));
             } else{
                 markerOn = true;
-                rectMode(CORNER);
                 rect(colorPoint.x - ((height-100)/7)/2, i * ((height-100)/7) + 70, ((height-100)/7), ((height-100)/7));
                 // if not over a color
                 if(colorPoint.y <= 70 + 5 || colorPoint.y > height-100 + 70 - 5) {
@@ -120,12 +127,12 @@ function palette(){
             }
         } else {
             farther.style.display = "none";
+            rectMode(CENTER);
             // distance between hand and shoulder and distance from y coordinate of right eye
             if (dist(smoothRightShoulder.x, smoothRightShoulder.y, colorPoint.x, colorPoint.y) < smoothDist * 3 || (smoothEyeR.x - colorPoint.x) < smoothDist * 4 ){ //if hand is close to body
-                rectMode(CENTER);
                 markerOn = false;
+                rect(smoothEyeR.x - smoothDist * 4, smoothEyeR.y - smoothDist * 2.5 + i * (smoothDist * 2), (smoothDist * 2), (smoothDist * 2));
             } else{ //if player is positioned well
-                rectMode(CENTER);
                 markerOn = true;
                 rect(colorPoint.x, smoothEyeR.y - smoothDist * 2.5 + i * (smoothDist * 2), (smoothDist * 2), (smoothDist * 2));
                 // if not over a color
@@ -141,8 +148,6 @@ function palette(){
 // scale the image to be the size of the canvas scaled proportionally
 function scaleImg(){
     push();
-    imageMode(CENTER);
-    rectMode(CENTER);
     fill(255,255);
     noStroke();
     videoWidth = video.width * (height/video.height);
@@ -259,20 +264,18 @@ function draw() {
             strokeWeight(marker[i + 1].stroke);
             line(x1, y1, x2, y2);
         }
-        
         pop();
 
         // right wrist smoothing
         colorPoint = shmooth(colorPoint, wristR, wristR.confidence);
 
         // get color of right wrist
-        let r = canvas.getContext('2d').getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[0];
-        let g = canvas.getContext('2d').getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[1];
-        let b = canvas.getContext('2d').getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[2];
-        let a = canvas.getContext('2d').getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[3];
+        context = canvas.getContext('2d', true, false, 'srgb', true);
+        let r = context.getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[0];
+        let g = context.getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[1];
+        let b = context.getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[2];
+        let a = context.getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[3];
         markerColor = color(r,g,b,a);
-
-        
 
         stroke(0);
         noFill(); 
@@ -290,18 +293,24 @@ function draw() {
             }
             // left hand drawer shape
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);     
-        } 
+        } else{
+            // left hand drawer shape
+            image(pointerImg, marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);
+            save.style.display = "unset";
+            clear.style.display = "unset";
+            save.style.top = smoothEyeL.y + "px";
+            save.style.right = smoothEyeL.x + smoothDist * 2 + "px";
+            clear.style.top = smoothEyeL.y + smoothDist * 2 + "px";
+            clear.style.right = smoothEyeL.x + smoothDist * 2 + "px";
+        }
 
         palette();
 
-        // create a new line if da kine stay off
+        // if first point in new marker push marker to all markers array
         if(!prevMarkerOn && markerOn){
-            // console.log(markerOn);
             marker = [];
             allMarkers.push(marker);
-            console.log(allMarkers);
         }
-        console.log(prevMarkerOn);
 
         // right hand color picker
         image(colorPickerImg, colorPoint.x, colorPoint.y, smoothDist/1.5, smoothDist/1.5);
