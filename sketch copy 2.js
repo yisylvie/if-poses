@@ -331,10 +331,10 @@ function draw() {
             clearP.style.display = "unset";
 
             // save is on the left of the hand
-            saveP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
+            saveP.style.right = firstLeftPointer.x + smoothDist * 2 + "px";
             
             // clear is on the right of the hand
-            clearP.style.right = smoothEyeL.x + smoothDist * 5 + "px";
+            clearP.style.right = firstLeftPointer.x + smoothDist * 5 + "px";
 
             // if hand is on lower half of the screen
             if(firstLeftPointer.y > centerY) {
@@ -343,7 +343,7 @@ function draw() {
                 clearP.style.top = firstLeftPointer.y - smoothDist * 3 + "px";
 
                 // if pointer is over clear, then clear screen
-                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 5) {
+                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 3 && leftPointer.x >= firstLeftPointer.x + smoothDist * 5) {
                     // remove all points from marker arrays
                     marker = [];
                     allMarkers = [];
@@ -354,10 +354,10 @@ function draw() {
                     clearP.style.display = "none";
                 }
                 // if pointer is over save and screen has not already been cleared, save screen
-                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 3 && leftPointer.x <= smoothEyeL.x + smoothDist * 2) {
+                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 3 && leftPointer.x <= firstLeftPointer.x + smoothDist * 2) {
+                    console.log("save");
                     // Prevent from running more that once 
                     if(!saved) {
-                        console.log("save");
                         saveCanvas(canvas, 'myCanvas');
                         saved = true;
                     }
@@ -368,7 +368,7 @@ function draw() {
                 clearP.style.top = firstLeftPointer.y + smoothDist * 3 + "px";
 
                 // if pointer is over clear, then clear screen
-                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 5) {
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x >= firstLeftPointer.x + smoothDist * 5) {
                     // remove all points from marker arrays
                     marker = [];
                     allMarkers = [];
@@ -379,7 +379,8 @@ function draw() {
                     clearP.style.display = "none";
                 }
                 // if pointer is over save and screen has not already been cleared, save screen
-                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x <= smoothEyeL.x + smoothDist * 2) {
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x <= firstLeftPointer.x + smoothDist * 2) {
+                    console.log("save");
                     // Prevent from running more that once 
                     if(!saved) {
                         console.log("save");
@@ -388,8 +389,6 @@ function draw() {
                     }
                 }
             }
-
-            
         }
 
         palette();
@@ -402,7 +401,7 @@ function draw() {
 
         // if first point when marker is off designate where save and clear should be fixed
         if(prevMarkerOn && !markerOn) {
-            firstLeftPointer = new markerPoint(leftPointer.x, leftPointer.y);
+            firstLeftPointer = new markerPoint(smoothEyeL.x, leftPointer.y);
             console.log(markerOn);
             saved = false;
         }
