@@ -318,38 +318,40 @@ function draw() {
             // hide save and clear options
             saveP.style.display = "none";
             clearP.style.display = "none";
-        } else if(allMarkers[0].length > 20) { //if there is actually artwork to save or clear
-            // eyeball pointer
-            image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
-            
-            // show save and clear options
-            saveP.style.display = "unset";
-            clearP.style.display = "unset";
+        } else if(allMarkers.length >= 1) { //if there is actually artwork to save or clear
+            if(allMarkers[0].length > 20) {
+                // eyeball pointer
+                image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
+                
+                // show save and clear options
+                saveP.style.display = "unset";
+                clearP.style.display = "unset";
 
-            // save is above hand
-            saveP.style.top = firstLeftPointer.y - smoothDist * 4 + "px";
-            saveP.style.right = leftPointer.x + "px";
-            // clear is below hand
-            clearP.style.top = firstLeftPointer.y + smoothDist * 4 + "px";
-            clearP.style.right = leftPointer.x + "px";
+                // save is above hand
+                saveP.style.top = firstLeftPointer.y - smoothDist * 4 + "px";
+                saveP.style.right = leftPointer.x + "px";
+                // clear is below hand
+                clearP.style.top = firstLeftPointer.y + smoothDist * 4 + "px";
+                clearP.style.right = leftPointer.x + "px";
 
-            // if pointer is over clear, then clear screen
-            if(leftPointer.y >= firstLeftPointer.y + smoothDist * 4) {
-                // remove all points from marker arrays
-                marker = [];
-                allMarkers = [];
-                console.log("clear");
-                // hide save and clear options
-                saveP.style.display = "none";
-                clearP.style.display = "none";
-            }
-            // if pointer is over save and screen has not already been cleared, save screen
-            if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && allMarkers[0].length > 20) {
-                // Prevent from running more that once 
-                if(!saved) {
-                    console.log("save");
-                    saveCanvas(canvas, 'myCanvas');
-                    saved = true;
+                // if pointer is over clear, then clear screen
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 4) {
+                    // remove all points from marker arrays
+                    marker = [];
+                    allMarkers = [];
+                    console.log("clear");
+                    // hide save and clear options
+                    saveP.style.display = "none";
+                    clearP.style.display = "none";
+                }
+                // if pointer is over save and screen has not already been cleared, save screen
+                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 4 && allMarkers[0].length > 20) {
+                    // Prevent from running more that once 
+                    if(!saved) {
+                        console.log("save");
+                        saveCanvas(canvas, 'myCanvas');
+                        saved = true;
+                    }
                 }
             }
         }
