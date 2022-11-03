@@ -315,11 +315,11 @@ function draw() {
 
             sizeOfAllMarkers ++;
             // left hand drawer shape
-            image(brushImg, marker[marker.length - 1].x + ((height/10)/5) * 2, marker[marker.length - 1].y - ((height/10)/5) * 2, (height/10), (height/10));
+            image(brushImg, marker[marker.length - 1].x + ((height/10)/5) * 2.5, marker[marker.length - 1].y - ((height/10)/5) * 2.5, (height/10), (height/10));
             ellipse(marker[marker.length - 1].x, marker[marker.length - 1].y, (height/10)/5, (height/10)/5);     
         } else if(markerForRealOn) {
             // left hand drawer shape
-            image(brushImg, leftPointer.x + ((height/10)/5) * 2, leftPointer.y - ((height/10)/5) * 2, (height/10), (height/10));
+            image(brushImg, leftPointer.x + ((height/10)/5) * 2.5, leftPointer.y - ((height/10)/5) * 2.5, (height/10), (height/10));
             ellipse(leftPointer.x, leftPointer.y, (height/10)/5, (height/10)/5);    
         }
 
