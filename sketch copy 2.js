@@ -320,8 +320,6 @@ function draw() {
             image(pointerImg, leftPointer.x, leftPointer.y, smoothDist, smoothDist);
         }
 
-        console.log(sizeOfAllMarkers);
-
         // create functionality for saving and clearing artwork
         if(markerForRealOn) {
             // hide save and clear options
@@ -336,7 +334,7 @@ function draw() {
             saveP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
             
             // clear is on the right of the hand
-            clearP.style.right = smoothEyeL.x + smoothDist * 4 + "px";
+            clearP.style.right = smoothEyeL.x + smoothDist * 5 + "px";
 
             // if hand is on lower half of the screen
             if(firstLeftPointer.y > centerY) {
@@ -345,7 +343,7 @@ function draw() {
                 clearP.style.top = firstLeftPointer.y - smoothDist * 3 + "px";
 
                 // if pointer is over clear, then clear screen
-                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 4) {
+                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 5) {
                     // remove all points from marker arrays
                     marker = [];
                     allMarkers = [];
@@ -356,7 +354,7 @@ function draw() {
                     clearP.style.display = "none";
                 }
                 // if pointer is over save and screen has not already been cleared, save screen
-                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x <= smoothEyeL.x + smoothDist * 2) {
+                if(leftPointer.y <= firstLeftPointer.y - smoothDist * 3 && leftPointer.x <= smoothEyeL.x + smoothDist * 2) {
                     // Prevent from running more that once 
                     if(!saved) {
                         console.log("save");
@@ -370,7 +368,7 @@ function draw() {
                 clearP.style.top = firstLeftPointer.y + smoothDist * 3 + "px";
 
                 // if pointer is over clear, then clear screen
-                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 4) {
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 5) {
                     // remove all points from marker arrays
                     marker = [];
                     allMarkers = [];
