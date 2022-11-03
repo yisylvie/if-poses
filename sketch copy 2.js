@@ -231,6 +231,7 @@ function draw() {
         smoothEyeR = shmooth(smoothEyeR, eyeR);
         smoothRightShoulder = shmooth(smoothRightShoulder, shoulderR);
         smoothDist = dist(smoothEyeR.x, smoothEyeR.y, smoothEyeL.x, smoothEyeL.y);
+        
         strokeWeight(smoothDist/15);     
 
         // // Display Pose Points
@@ -252,6 +253,9 @@ function draw() {
         // }
 
         prevMarkerOn = markerOn;
+        stroke(117, 38, 95, 1);
+        noFill(); 
+
         palette();
 
         push();
@@ -295,8 +299,6 @@ function draw() {
         let a = context.getImageData((width - colorPoint.x)*2, colorPoint.y*2, 1, 1).data[3];
         markerColor = color(r,g,b,a);
 
-        stroke(0);
-        noFill(); 
         // add wrist position to marker array
         if(markerOn) {
             if(marker.length > 1) {
@@ -332,10 +334,10 @@ function draw() {
             clearP.style.display = "unset";
 
             // save is on the left of the hand
-            saveP.style.right = leftEye.x + smoothDist * 2 + "px";
+            saveP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
             
             // clear is on the right of the hand
-            clearP.style.right = leftEye.x + smoothDist * 4 + "px";
+            clearP.style.right = smoothEyeL.x + smoothDist * 4 + "px";
 
             // if hand is on lower half of the screen
             if(firstLeftPointer.y > centerY) {
@@ -344,7 +346,7 @@ function draw() {
                 clearP.style.top = firstLeftPointer.y - smoothDist * 3 + "px";
 
                 // if pointer is over clear, then clear screen
-                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x >= leftEye.x + smoothDist * 4) {
+                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 4) {
                     // remove all points from marker arrays
                     marker = [];
                     allMarkers = [];
@@ -355,7 +357,7 @@ function draw() {
                     clearP.style.display = "none";
                 }
                 // if pointer is over save and screen has not already been cleared, save screen
-                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x <= leftEye.x + smoothDist * 2) {
+                if(leftPointer.y >= firstLeftPointer.y - smoothDist * 3 && leftPointer.x <= smoothEyeL.x + smoothDist * 2) {
                     // Prevent from running more that once 
                     if(!saved) {
                         console.log("save");
@@ -369,7 +371,7 @@ function draw() {
                 clearP.style.top = firstLeftPointer.y + smoothDist * 3 + "px";
 
                 // if pointer is over clear, then clear screen
-                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x >= leftEye.x + smoothDist * 4) {
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x >= smoothEyeL.x + smoothDist * 4) {
                     // remove all points from marker arrays
                     marker = [];
                     allMarkers = [];
@@ -380,7 +382,7 @@ function draw() {
                     clearP.style.display = "none";
                 }
                 // if pointer is over save and screen has not already been cleared, save screen
-                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x <= leftEye.x + smoothDist * 2) {
+                if(leftPointer.y >= firstLeftPointer.y + smoothDist * 3 && leftPointer.x <= smoothEyeL.x + smoothDist * 2) {
                     // Prevent from running more that once 
                     if(!saved) {
                         console.log("save");
