@@ -20,8 +20,8 @@ let smoothDist = 0;
 let prevMarkerOn = false;
 let markerOn = false;
 let farther = document.getElementById("farther");
-let save = document.getElementById("save");
-let clear = document.getElementById("clear");
+let saveP = document.getElementById("save");
+let clearP = document.getElementById("clear");
 
 function markerPoint(x, y, color, stroke) {
     this.x = x;
@@ -281,9 +281,9 @@ function draw() {
         noFill(); 
         // add wrist position to marker array
         if(markerOn) {
-            // hide save and clear options
-            save.style.display = "none";
-            clear.style.display = "none";
+            // hide saveP and clear options
+            saveP.style.display = "none";
+            clearP.style.display = "none";
             if(marker.length > 1) {
                 // smoothing
                 let x = shmooth(marker[marker.length - 1], wristL, wristL.confidence).x;
@@ -300,12 +300,12 @@ function draw() {
             // left hand pointer
             image(pointerImg, marker[marker.length - 1].x, marker[marker.length - 1].y, smoothDist/1.5, smoothDist/1.5);
             // show save and clear options
-            save.style.display = "unset";
-            clear.style.display = "unset";
-            save.style.top = smoothEyeL.y + "px";
-            save.style.right = smoothEyeL.x + smoothDist * 2 + "px";
-            clear.style.top = smoothEyeL.y + smoothDist * 2 + "px";
-            clear.style.right = smoothEyeL.x + smoothDist * 2 + "px";
+            saveP.style.display = "unset";
+            clearP.style.display = "unset";
+            saveP.style.top = smoothEyeL.y + "px";
+            saveP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
+            clearP.style.top = smoothEyeL.y + smoothDist * 2 + "px";
+            clearP.style.right = smoothEyeL.x + smoothDist * 2 + "px";
             if(marker[marker.length - 1].x > smoothEyeL.x + smoothDist * 2) {
                 // if pointer is over clear, then clear screen
                 if( marker[marker.length - 1].y >= smoothEyeL.y + smoothDist * 2) {
